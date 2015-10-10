@@ -5,7 +5,7 @@ import image.ImageReader;
 public class Main {
 
     public static void main(String[] args) {
-        ImageReader imageReader;
+        ImageReader imageReader = new ImageReader("resources/images/8bit.png");
 
     }
 }

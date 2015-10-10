@@ -1,14 +1,17 @@
 package image;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Created by elfeylord on 10/9/15.
  */
 public class ImageReader {
+
+    public ImageReader(String fileName) {
+        readImage(fileName);
+    }
+
     public Image getImage() {
         return image;
     }
@@ -19,27 +22,28 @@ public class ImageReader {
 
     private Image image;
 
-    public static void readImage()
+    private void readImage(String fileName)
     {
-        FileReader fileReader = null;
+        FileInputStream in;
+
+        ArrayList<Integer> buffer = new ArrayList<Integer>();
+
         try {
-            fileReader = new FileReader("resources/images/cole.jpg");
+            in = new FileInputStream(fileName);
+            int c;
+
+            while ((c = in.read()) != -1) {
+                buffer.add(c);
+            }
+            in.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        BufferedReader bufferReader = new BufferedReader(fileReader);
-        String string;
-        try {
-            while ((string = bufferReader.readLine()) != null) {
-                System.out.println(string);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            fileReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        for (int i = 0; i < buffer.size(); i++) {
+            System.out.println(buffer.get(i));
         }
     }
 }

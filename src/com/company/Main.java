@@ -28,8 +28,14 @@ public class Main {
                     else if (color.getR() == 255 && color.getG() == 255 && color.getB() == 255) {
                         System.out.print("White ");
                     }
-                    else if (color.getR() == 36 && color.getG() == 28 && color.getB() == 237) {
+                    else if (color.getR() == 237 && color.getG() == 28 && color.getB() == 36) {
                         System.out.print("~Red~ ");
+                    }
+                    else if (color.getR() == 63 && color.getG() == 72 && color.getB() == 204) {
+                        System.out.print("~Blue ");
+                    }
+                    else if (color.getR() == 34 && color.getG() == 177 && color.getB() == 76) {
+                        System.out.print("Green ");
                     }
                     else {
                         System.out.print("Dunno ");

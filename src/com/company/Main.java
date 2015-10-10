@@ -25,22 +25,22 @@ public class Main {
                 try {
                     color = image.getColorPoint(j, i);
                     if (color.getR() == 0 && color.getG() == 0 && color.getB() == 0) {
-                        System.out.print("Black ");
+                        System.out.print("@ ");
                     }
                     else if (color.getR() == 255 && color.getG() == 255 && color.getB() == 255) {
-                        System.out.print("White ");
+                        System.out.print("- ");
                     }
                     else if (color.getR() == 237 && color.getG() == 28 && color.getB() == 36) {
-                        System.out.print("~Red~ ");
+                        System.out.print("R ");
                     }
                     else if (color.getR() == 63 && color.getG() == 72 && color.getB() == 204) {
-                        System.out.print("~Blue ");
+                        System.out.print("B ");
                     }
                     else if (color.getR() == 34 && color.getG() == 177 && color.getB() == 76) {
-                        System.out.print("Green ");
+                        System.out.print("G ");
                     }
                     else {
-                        System.out.print("Dunno ");
+                        System.out.print("? ");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

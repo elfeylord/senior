@@ -18,7 +18,7 @@ public class Image {
     private int cols;
 
     //TODO: change this to color and change all the getters and setters.
-    private int[][] data;
+    private Color[][] data;
 
     Image(int rows, int cols) {
         if (rows < 1) {
@@ -29,7 +29,7 @@ public class Image {
         }
         this.rows = rows;
         this.cols = cols;
-        this.data = new int[rows][cols];
+        this.data = new Color[rows][cols];
     }
 
     private boolean isValidPoint(int x, int y) {
@@ -39,17 +39,17 @@ public class Image {
         return false;
     }
 
-    public boolean setDataPoint(int x, int y, int dataPoint) {
+    public boolean setDataPoint(int x, int y, Color color) {
         if (isValidPoint(x, y))
         {
-            this.data[x][y] = dataPoint;
+            this.data[x][y] = new Color(color);
             return true;
         } else {
             return false;
         }
     }
 
-    public int getDataPoint(int x, int y) throws Exception {
+    public Color getDataPoint(int x, int y) throws Exception {
         if (isValidPoint(x, y)) {
             return this.data[x][y];
         }

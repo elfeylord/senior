@@ -32,9 +32,22 @@ public class Color {
     private int g;
     private int b;
 
-    public Color(int r, int g, int b) {
+    public void setColor(int r, int g, int b) {
         this.r = r;
         this.g = g;
         this.b = b;
+    }
+
+    public void setColor(Color color)
+    {
+        setColor(color.getR(), color.getG(), color.getB());
+    }
+
+    public Color(int r, int g, int b) {
+        setColor(r, g, b);
+    }
+
+    public Color(Color color) {
+        setColor(color);
     }
 }

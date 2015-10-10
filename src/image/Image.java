@@ -5,33 +5,31 @@ package image;
  */
 public class Image {
 
-    private int rows;
-    private int cols;
+    private int rowsSize;
+    private int colsSize;
     private Color[][] color;
 
-    Image(int rows, int cols) {
-        if (rows < 1) {
-            rows = 1;
+    public Image(int rowsSize, int colsSize) {
+        if (rowsSize < 1) {
+            rowsSize = 1;
         }
-        if (cols < 1) {
-            cols = 1;
+        if (colsSize < 1) {
+            colsSize = 1;
         }
-        this.rows = rows;
-        this.cols = cols;
-        this.color = new Color[rows][cols];
+        this.rowsSize = rowsSize;
+        this.colsSize = colsSize;
+        this.color = new Color[rowsSize][colsSize];
     }
 
     //We do not want setters because if we have setters then the array will not be the correct size
-    public int getCols() {
-        return cols;
+    public int getColsSize() {
+        return colsSize;
     }
 
-    public int getRows() {
-        return rows;
-    }
+    public int getRowsSize() { return rowsSize; }
 
     private boolean isValidPoint(int x, int y) {
-        if (x < rows && y < cols && x >= 0 && y >= 0) {
+        if (x < rowsSize && y < colsSize && x >= 0 && y >= 0) {
             return true;
         }
         return false;

@@ -1,5 +1,6 @@
 package com.company;
 
+import edge.ConvertEdge;
 import image.Color;
 import image.Image;
 import image.ImageReader;
@@ -8,17 +9,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        testImage();
+
+        Image image = testImage();
+
+        ConvertEdge convertEdge = new ConvertEdge(image);
+        convertEdge.convert(20);
+        displayImage(convertEdge.getImage());
 
     }
 
-    private static void testImage() {
-        //Test image read and store
-        ImageReader imageReader = new ImageReader("resources/images/4blob2.bmp");
-        Image image = imageReader.getImage();
-
-        for (int i = 0; i < image.getCols(); i++) {
-            for (int j = 0; j < image.getRows(); j++) {
+    private static void displayImage(Image image) {
+        for (int i = 0; i < image.getColsSize(); i++) {
+            for (int j = 0; j < image.getRowsSize(); j++) {
                 Color color;
                 try {
                     color = image.getColorPoint(j, i);
@@ -46,5 +48,13 @@ public class Main {
             }
             System.out.print("\n");
         }
+    }
+
+    private static Image testImage() {
+        //Test image read and store
+        ImageReader imageReader = new ImageReader("resources/images/32onlyredblob.bmp");
+        Image image = imageReader.getImage();
+        displayImage(image);
+        return image;
     }
 }

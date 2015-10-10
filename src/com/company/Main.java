@@ -8,6 +8,12 @@ public class Main {
 
     public static void main(String[] args) {
 
+        testImage();
+
+
+    }
+
+    private static void testImage() {
         //Test image read and store
         ImageReader imageReader = new ImageReader("resources/images/4blob.bmp");
         Image image = imageReader.getImage();
@@ -35,7 +41,5 @@ public class Main {
             }
             System.out.print("\n");
         }
-
-
     }
 }

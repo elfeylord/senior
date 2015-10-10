@@ -68,6 +68,5 @@ public class ImageReader {
                 image.setDataPoint(j, i, color);
             }
         }
-        System.out.println("this is taking forever");
     }
 }

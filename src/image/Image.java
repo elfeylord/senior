@@ -18,7 +18,9 @@ public class Image {
     private int cols;
 
     //TODO: change this to color and change all the getters and setters.
-    private Color[][] data;
+    private Color[][] color;
+
+    private int[][] raster;
 
     Image(int rows, int cols) {
         if (rows < 1) {
@@ -29,7 +31,8 @@ public class Image {
         }
         this.rows = rows;
         this.cols = cols;
-        this.data = new Color[rows][cols];
+        this.raster = new int[rows][cols];
+        this.color = new Color[rows][cols];
     }
 
     private boolean isValidPoint(int x, int y) {
@@ -39,19 +42,29 @@ public class Image {
         return false;
     }
 
-    public boolean setDataPoint(int x, int y, Color color) {
+    public boolean setDataPoint(int x, int y, int raster) {
         if (isValidPoint(x, y))
         {
-            this.data[x][y] = new Color(color);
+            this.raster[x][y] = raster;
+            return true;
+        } else {
+            this.raster[x][y] = -1;
+            return false;
+        }
+    }
+    public boolean setColorPoint(int x, int y, Color color) {
+        if (isValidPoint(x, y))
+        {
+            this.color[x][y] = new Color(color);
             return true;
         } else {
             return false;
         }
     }
 
-    public Color getDataPoint(int x, int y) throws Exception {
+    public Color getColorPoint(int x, int y) throws Exception {
         if (isValidPoint(x, y)) {
-            return this.data[x][y];
+            return this.color[x][y];
         }
         throw new Exception();
     }

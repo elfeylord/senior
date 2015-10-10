@@ -9,6 +9,16 @@ import java.io.IOException;
  * Created by elfeylord on 10/9/15.
  */
 public class ImageReader {
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    private Image image;
+
     public static void readImage()
     {
         FileReader fileReader = null;

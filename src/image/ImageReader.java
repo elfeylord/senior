@@ -9,7 +9,6 @@ import java.io.IOException;
  * Created by elfeylord on 10/9/15.
  */
 public class ImageReader {
-    private
     public static void readImage()
     {
         FileReader fileReader = null;

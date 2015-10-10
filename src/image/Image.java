@@ -16,6 +16,8 @@ public class Image {
 
     private int rows;
     private int cols;
+
+    //TODO: change this to color and change all the getters and setters.
     private int[][] data;
 
     Image(int rows, int cols) {

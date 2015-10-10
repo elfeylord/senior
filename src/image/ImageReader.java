@@ -47,7 +47,8 @@ public class ImageReader {
                     int number = start + (i * xSize * numberOfColorsSpace) + (j * numberOfColorsSpace) + k;
                     r[k] = buffer.get(number);
                 }
-                color = new Color(r[0], r[1], r[2]);
+                //colors come BGR not RGB
+                color = new Color(r[2], r[1], r[0]);
                 image.setColorPoint(j, bottom, color);
             }
         }

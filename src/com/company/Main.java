@@ -10,12 +10,11 @@ public class Main {
 
         testImage();
 
-
     }
 
     private static void testImage() {
         //Test image read and store
-        ImageReader imageReader = new ImageReader("resources/images/4blob.bmp");
+        ImageReader imageReader = new ImageReader("resources/images/4blob2.bmp");
         Image image = imageReader.getImage();
 
         for (int i = 0; i < image.getCols(); i++) {

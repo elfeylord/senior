@@ -23,10 +23,10 @@ public class ConvertEdge {
     }
 
     public void convert(int threshold) {
-        Image newImage = new Image(image.getRowsSize(), image.getColsSize());
+        Image newImage = new Image(image.getXSize(), image.getYSize());
 
-        for (int i = 0; i < image.getColsSize(); i++) {
-            for (int j = 0; j < image.getRowsSize(); j++) {
+        for (int i = 0; i < image.getYSize(); i++) {
+            for (int j = 0; j < image.getXSize(); j++) {
                 boolean rewrite = rewritePixel(image, j, i, threshold);
                 if (rewrite) {
                     newImage.setColorPoint(j, i, new Color(0 ,0 ,0));
@@ -70,7 +70,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //top right
-        if ((x + 1) != image.getColsSize() && y != 0) {
+        if ((x + 1) != image.getXSize() && y != 0) {
             try {
                 Color color = image.getColorPoint((x + 1), (y - 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -96,7 +96,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //right
-        if ((x + 1) != image.getColsSize()) {
+        if ((x + 1) != image.getXSize()) {
             try {
                 Color color = image.getColorPoint((x + 1), (y));
                 int brightnessValue = getBrightnessValue(color);
@@ -109,7 +109,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //bottom left
-        if (x != 0  && (y + 1) != image.getRowsSize()) {
+        if (x != 0  && (y + 1) != image.getYSize()) {
             try {
                 Color color = image.getColorPoint((x - 1), (y + 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -122,7 +122,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //bottom
-        if ((y + 1) != image.getRowsSize()) {
+        if ((y + 1) != image.getYSize()) {
             try {
                 Color color = image.getColorPoint((x), (y + 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -135,7 +135,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //bottom right
-        if ((x + 1) != image.getColsSize()  && (y + 1) != image.getRowsSize()) {
+        if ((x + 1) != image.getXSize()  && (y + 1) != image.getYSize()) {
             try {
                 Color color = image.getColorPoint((x + 1), (y + 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -156,10 +156,16 @@ public class ConvertEdge {
     }
 
     private int getBrightnessValue(Color color) {
+
+        //Perceived Brightness of a Color
+        //http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
+        //brightness  =  sqrt( .241 R2 + .691 G2 + .068 B2 )
+
         int r = color.getR();
         int g = color.getG();
         int b = color.getB();
-        double brightness = 0.299 * (double)(r*r) + 0.587 * (double)(g*g) + 0.114 * (double)(b*b);
+        double brightness = 0.333 * (double)(r*r) + 0.333 * (double)(g*g) + 0.334 * (double)(b*b);
+        //double brightness = 0.299 * (double)(r*r) + 0.587 * (double)(g*g) + 0.114 * (double)(b*b);
         brightness = Math.sqrt(brightness);
         return (int)Math.round(brightness);
     }

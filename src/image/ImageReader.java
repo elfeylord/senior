@@ -22,10 +22,14 @@ public class ImageReader {
 
     private Image image;
 
-    private void readImage(String fileName)
-    {
+    private void readImage(String fileName) {
         ArrayList<Integer> buffer = getBuffer(fileName);
 
+        for (int i = 0; i < buffer.size(); i++) {
+            System.out.println(i + ": " + buffer.get(i));
+        }
+
+        //using bytes will cause a problem
         int xSize = buffer.get(18); //the cols size, or width
         int ySize = buffer.get(22); //the rows size, or height
 

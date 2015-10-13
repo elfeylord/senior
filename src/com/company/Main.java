@@ -4,23 +4,40 @@ import edge.ConvertEdge;
 import image.Color;
 import image.Image;
 import image.ImageReader;
+import image.ImageWriter;
+
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
 
-        Image image = testImage();
+        String inFile = "resources/images/255cole.bmp";
 
+        //Test the image Reader
+        Image image = testImage(inFile);
+
+        //displayImage(image);
+        //Test edge converting
         ConvertEdge convertEdge = new ConvertEdge(image);
-        convertEdge.convert(20);
-        displayImage(convertEdge.getImage());
+        convertEdge.convert(40);
+        //displayImage(convertEdge.getImage());
+
+        //Test image writer
+        ImageWriter imageWriter = new ImageWriter(convertEdge.getImage());
+
+        try {
+            imageWriter.writeImage("resources/images/out.bmp", inFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     private static void displayImage(Image image) {
-        for (int i = 0; i < image.getColsSize(); i++) {
-            for (int j = 0; j < image.getRowsSize(); j++) {
+        for (int i = 0; i < image.getYSize(); i++) {
+            for (int j = 0; j < image.getXSize(); j++) {
                 Color color;
                 try {
                     color = image.getColorPoint(j, i);
@@ -50,11 +67,10 @@ public class Main {
         }
     }
 
-    private static Image testImage() {
+    private static Image testImage(String inFile) {
         //Test image read and store
-        ImageReader imageReader = new ImageReader("resources/images/32onlyredblob.bmp");
+        ImageReader imageReader = new ImageReader(inFile);
         Image image = imageReader.getImage();
-        displayImage(image);
         return image;
     }
 }

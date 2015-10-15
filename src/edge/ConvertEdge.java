@@ -25,15 +25,17 @@ public class ConvertEdge {
     public void convert(int threshold) {
         Image newImage = new Image(image.getXSize(), image.getYSize());
 
-        for (int i = 0; i < image.getYSize(); i++) {
-            for (int j = 0; j < image.getXSize(); j++) {
+        int ySize = image.getYSize();
+        int xSize = image.getXSize();
+
+        for (int i = 0; i < ySize; i++) {
+            for (int j = 0; j < xSize; j++) {
                 boolean rewrite = rewritePixel(image, j, i, threshold);
                 if (rewrite) {
                     newImage.setColorPoint(j, i, new Color(0 ,0 ,0));
                 } else {
                     newImage.setColorPoint(j, i, new Color(255 ,255 ,255));
                 }
-
             }
         }
         this.image = newImage;
@@ -44,7 +46,7 @@ public class ConvertEdge {
         int lightestPixel = 255;
 
         //top left
-        if (x != 0 && y != 0) {
+        if (x > 0 && y > 0) {
             try {
                 Color color = image.getColorPoint((x - 1), (y - 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -57,7 +59,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //top
-        if (y != 0) {
+        if (y > 0) {
             try {
                 Color color = image.getColorPoint((x), (y - 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -70,7 +72,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //top right
-        if ((x + 1) != image.getXSize() && y != 0) {
+        if (((x + 1) < image.getXSize()) && y > 0) {
             try {
                 Color color = image.getColorPoint((x + 1), (y - 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -83,7 +85,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //left
-        if (x != 0) {
+        if (x > 0) {
             try {
                 Color color = image.getColorPoint((x - 1), (y));
                 int brightnessValue = getBrightnessValue(color);
@@ -96,7 +98,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //right
-        if ((x + 1) != image.getXSize()) {
+        if ((x + 1) < image.getXSize()) {
             try {
                 Color color = image.getColorPoint((x + 1), (y));
                 int brightnessValue = getBrightnessValue(color);
@@ -109,7 +111,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //bottom left
-        if (x != 0  && (y + 1) != image.getYSize()) {
+        if (x > 0  && ((y + 1) < image.getYSize())) {
             try {
                 Color color = image.getColorPoint((x - 1), (y + 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -122,7 +124,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //bottom
-        if ((y + 1) != image.getYSize()) {
+        if ((y + 1) < image.getYSize()) {
             try {
                 Color color = image.getColorPoint((x), (y + 1));
                 int brightnessValue = getBrightnessValue(color);
@@ -135,7 +137,7 @@ public class ConvertEdge {
             } catch (Exception e) { e.printStackTrace(); }
         }
         //bottom right
-        if ((x + 1) != image.getXSize()  && (y + 1) != image.getYSize()) {
+        if (((x + 1) < image.getXSize()) && ((y + 1) < image.getYSize())) {
             try {
                 Color color = image.getColorPoint((x + 1), (y + 1));
                 int brightnessValue = getBrightnessValue(color);

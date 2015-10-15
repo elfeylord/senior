@@ -25,13 +25,13 @@ public class ImageReader {
     private void readImage(String fileName) {
         ArrayList<Integer> buffer = getBuffer(fileName);
 
-        for (int i = 0; i < buffer.size(); i++) {
-            System.out.println(i + ": " + buffer.get(i));
-        }
+        //for (int i = 0; i < buffer.size(); i++) {
+        //    System.out.println(i + ": " + buffer.get(i));
+        //}
 
         //using bytes will cause a problem
-        int xSize = buffer.get(18); //the cols size, or width
-        int ySize = buffer.get(22); //the rows size, or height
+        int xSize = calculateWidthOrHieght(buffer.get(18), buffer.get(19), buffer.get(20), buffer.get(21)); //the cols size, or width
+        int ySize = calculateWidthOrHieght(buffer.get(22), buffer.get(23), buffer.get(24), buffer.get(25)); //the rows size, or height
 
         image = new Image(xSize, ySize);
 
@@ -42,19 +42,23 @@ public class ImageReader {
         int numberOfColorsSpace = 3;
         //this is so that the image is recorded properly. .BMP files start bottom left.
         int bottom  = ySize;
+        //every end of the x axis has 3 bytes extra
+        int waster = 0;
         for (int i = 0; i < ySize; i++) {
             bottom--;
             for (int j = 0; j < xSize; j++) {
                 Color color;
                 int r[] = new int[numberOfColorsSpace];
                 for (int k = 0; k < numberOfColorsSpace; k++) {
-                    int number = start + (i * xSize * numberOfColorsSpace) + (j * numberOfColorsSpace) + k;
+                    int number = waster + start + (i * xSize * numberOfColorsSpace) + (j * numberOfColorsSpace) + k;
                     r[k] = buffer.get(number);
                 }
                 //colors come BGR not RGB
                 color = new Color(r[2], r[1], r[0]);
                 image.setColorPoint(j, bottom, color);
             }
+            //waste 3 bytes just because
+            waster += 3;
         }
     }
 
@@ -76,5 +80,25 @@ public class ImageReader {
             e.printStackTrace();
         }
         return buffer;
+    }
+
+    private int calculateWidthOrHieght(int num1, int num2, int num3, int num4) {
+
+        int number = 0;
+
+        char byte1 = (char)num1;
+        char byte2 = (char)num2;
+        char byte3 = (char)num3;
+        char byte4 = (char)num4;
+
+        number += byte4;
+        number = number << 8;
+        number += byte3;
+        number = number << 8;
+        number += byte2;
+        number = number << 8;
+        number += byte1;
+
+        return number;
     }
 }

@@ -8,12 +8,14 @@ import image.ImageWriter;
 
 import java.io.IOException;
 
+//TODO figure out why the writer needs an extra row of pixels.
+//TODO figure out why there are two solid black lines on each side, right and left.
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
 
-        String inFile = "resources/images/255cole.bmp";
+        String inFile = "resources/images/colesmall.bmp";
 
         //Test the image Reader
         Image image = testImage(inFile);
@@ -21,11 +23,12 @@ public class Main {
         //displayImage(image);
         //Test edge converting
         ConvertEdge convertEdge = new ConvertEdge(image);
-        convertEdge.convert(40);
+        convertEdge.convert(15);
         //displayImage(convertEdge.getImage());
 
         //Test image writer
         ImageWriter imageWriter = new ImageWriter(convertEdge.getImage());
+        //ImageWriter imageWriter = new ImageWriter(image);
 
         try {
             imageWriter.writeImage("resources/images/out.bmp", inFile);

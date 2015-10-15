@@ -48,9 +48,6 @@ public class ImageWriter {
                 out.write(color.getG());
                 out.write(color.getR());
             }
-        }
-        for (int i = 0; i < image.getXSize(); i++) {
-            Color color = image.getColorPoint(0, i);
             out.write((int)255);
             out.write((int)255);
             out.write((int)255);

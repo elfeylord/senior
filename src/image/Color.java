@@ -47,6 +47,25 @@ public class Color {
         setColor(r, g, b);
     }
 
+    public boolean isBlack() {
+        if (r == 0 && g == 0 && b ==0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setBlack () {
+        r = 0;
+        g = 0;
+        b = 0;
+    }
+
+    public void setWhite () {
+        r = 255;
+        g = 255;
+        b = 255;
+    }
+
     public Color(Color color) {
         setColor(color);
     }

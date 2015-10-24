@@ -64,9 +64,54 @@ public class Image {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return total;
+    }
+
+    public boolean isBlackPixel(int x, int y) {
+        try {
+            return getColorPoint(x, y).isBlack();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public void setBlackPixel(int x, int y) {
+        try {
+            getColorPoint(x,y).setBlack();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void setWhitePixel(int x, int y) {
+        try {
+            getColorPoint(x, y).setWhite();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public boolean hasAbove(int x, int y) {
+        if (y > 0) {
+            return true;
+        }
+        return false;
+    }
+    public boolean hasBelow(int x, int y) {
+        if ( y < (ySize - 1)) {
+            return true;
+        }
+        return false;
+    }
+    public boolean hasLeft(int x, int y) {
+        if (x > 0) {
+            return true;
+        }
+        return false;
+    }
+    public boolean hasRight(int x, int y) {
+        if (x < (xSize - 1)) {
+            return true;
+        }
+        return false;
     }
 
 }

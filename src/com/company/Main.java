@@ -23,7 +23,7 @@ public class Main {
         //displayImage(image);
         //Test edge converting
         ConvertEdge convertEdge = new ConvertEdge(image);
-        convertEdge.convert(15);
+        convertEdge.convert(20);
         //displayImage(convertEdge.getImage());
 
         //Test image writer

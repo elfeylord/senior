@@ -2,6 +2,7 @@ package detection;
 
 import image.Image;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ public class BlobProcessing {
 
     public BlobProcessing(Image image) {
         this.image = image;
+        blobs = new ArrayList<Blob>();
         processImage();
 
     }
@@ -46,9 +48,9 @@ public class BlobProcessing {
                         skipPixel = true;
                     }
                 }
-                if (!skipPixel) {
+                if (!skipPixel && image.isBlackPixel(j, i)) {
 
-                    newBlob = new Blob(image.getXSize(), image.getXSize());
+                    newBlob = new Blob(image.getXSize(), image.getYSize());
 
                     //set the pixel in the blob
                     newBlob.setBlackPixel(j,i);
@@ -60,28 +62,30 @@ public class BlobProcessing {
                         int maxX = (newBlob.getMaxX() + 1);
                         for (int i2 = newBlob.getMinY(); i2 < maxY; i2++) {
                             for (int j2 = newBlob.getMinX(); j2 < maxX; j2++) {
-                                if (newBlob.hasAbove(j2, i2)) {
-                                    if (image.isBlackPixel(j2, i2 - 1) && !newBlob.isBlackPixel(j2, i2 - 1)) {
-                                        newBlob.setBlackPixel(j2, i2 - 1);
-                                        keepGoing = true;
+                                if (newBlob.isBlackPixel(j2, i2)) {
+                                    if (newBlob.hasAbove(j2, i2)) {
+                                        if (image.isBlackPixel(j2, i2 - 1) && !newBlob.isBlackPixel(j2, i2 - 1)) {
+                                            newBlob.setBlackPixel(j2, i2 - 1);
+                                            keepGoing = true;
+                                        }
                                     }
-                                }
-                                if (newBlob.hasBelow(j2, i2)) {
-                                    if (image.isBlackPixel(j2, i2 + 1) && !newBlob.isBlackPixel(j2, i2 + 1)) {
-                                        newBlob.setBlackPixel(j2, i2 + 1);
-                                        keepGoing = true;
+                                    if (newBlob.hasBelow(j2, i2)) {
+                                        if (image.isBlackPixel(j2, i2 + 1) && !newBlob.isBlackPixel(j2, i2 + 1)) {
+                                            newBlob.setBlackPixel(j2, i2 + 1);
+                                            keepGoing = true;
+                                        }
                                     }
-                                }
-                                if (newBlob.hasRight(j2, i2)) {
-                                    if (image.isBlackPixel(j2 + 1, i2) && !newBlob.isBlackPixel(j2 + 1, i2)) {
-                                        newBlob.setBlackPixel(j2 + 1, i2);
-                                        keepGoing = true;
+                                    if (newBlob.hasRight(j2, i2)) {
+                                        if (image.isBlackPixel(j2 + 1, i2) && !newBlob.isBlackPixel(j2 + 1, i2)) {
+                                            newBlob.setBlackPixel(j2 + 1, i2);
+                                            keepGoing = true;
+                                        }
                                     }
-                                }
-                                if (newBlob.hasLeft(j2, i2)) {
-                                    if (image.isBlackPixel(j2 - 1, i2) && !newBlob.isBlackPixel(j2 - 1, i2)) {
-                                        newBlob.setBlackPixel(j2 - 1, i2);
-                                        keepGoing = true;
+                                    if (newBlob.hasLeft(j2, i2)) {
+                                        if (image.isBlackPixel(j2 - 1, i2) && !newBlob.isBlackPixel(j2 - 1, i2)) {
+                                            newBlob.setBlackPixel(j2 - 1, i2);
+                                            keepGoing = true;
+                                        }
                                     }
                                 }
 

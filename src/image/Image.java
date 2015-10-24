@@ -19,6 +19,11 @@ public class Image {
         this.xSize = xSize;
         this.ySize = ySize;
         this.color = new Color[xSize][ySize];
+        for (int i = 0; i < ySize; i++) {
+            for (int j = 0; j < xSize; j++) {
+                color[j][i] = new Color();
+            }
+        }
     }
 
     //We do not want setters because if we have setters then the array will not be the correct size

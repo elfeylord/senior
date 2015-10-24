@@ -25,10 +25,6 @@ public class ImageReader {
     private void readImage(String fileName) {
         ArrayList<Integer> buffer = getBuffer(fileName);
 
-        //for (int i = 0; i < buffer.size(); i++) {
-        //    System.out.println(i + ": " + buffer.get(i));
-        //}
-
         //using bytes will cause a problem
         int xSize = calculateWidthOrHieght(buffer.get(18), buffer.get(19), buffer.get(20), buffer.get(21)); //the cols size, or width
         int ySize = calculateWidthOrHieght(buffer.get(22), buffer.get(23), buffer.get(24), buffer.get(25)); //the rows size, or height

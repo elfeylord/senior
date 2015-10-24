@@ -46,6 +46,7 @@ public class Color {
     public Color(int r, int g, int b) {
         setColor(r, g, b);
     }
+    public Color() { setColor(255, 255, 255); }
 
     public boolean isBlack() {
         if (r == 0 && g == 0 && b ==0) {

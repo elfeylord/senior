@@ -74,8 +74,97 @@ public class WriteFaces {
         }
     }
 
+    public void writeFaces(Matrix A, ArrayList<String> names, String fileName) {
+        HashMap<String, ArrayList<Long>> images = new HashMap();
+
+        int MN = A.getRowDimension();
+
+
+
+        ArrayList<Matrix> matrixes = new ArrayList();
+
+        for (int i = 0; i < A.getColumnDimension(); i++) {
+            matrixes.add(A.getMatrix(0, (MN) - 1, i, i));
+        }
+
+
+
+
+        int size = MN;
+
+        int i = 0;
+        for (Matrix matrix : matrixes) {
+            ArrayList<Long> putArray  = new ArrayList();
+            //This is where the writing goes
+            double array[][] = matrix.getArray();
+            for (int j = 0; j < size; j++) {
+                putArray.add((long)(array[j][0]));
+
+            }
+            images.put(names.get(i), putArray);
+            i++;
+        }
+
+        writeFaces(images, fileName);
+    }
+
+    /***
+     *
+     * Number of images
+     * Length of images
+     * name
+     * data
+     *
+     *
+     * @param images
+     * @param fileName
+     */
+    public void writeFaces(HashMap<String, ArrayList<Long>> images, String fileName){
+
+
+        try {
+            FileWriter fileWriter = new FileWriter(fileName);
+
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            Set<String> keys = images.keySet();
+            int size = keys.size();
+            bufferedWriter.write("" + size);
+            bufferedWriter.newLine();
+
+            boolean lengthWritten = false;
+
+            for (String key : keys) {
+
+                ArrayList<Long> tempArray = images.get(key);
+
+                if (lengthWritten == false) {
+                    bufferedWriter.write("" + tempArray.size());
+                    bufferedWriter.newLine();
+                    lengthWritten = true;
+                }
+                bufferedWriter.write(key);
+                bufferedWriter.newLine();
+
+                for (long pixel : tempArray) {
+                    bufferedWriter.write("" + (pixel == 0 ? "0" : pixel));
+                    bufferedWriter.newLine();
+                }
+            }
+
+            // Always close files.
+            bufferedWriter.close();
+        }
+        catch(IOException ex) {
+            System.out.println(
+                    "Error writing to file '" + fileName + "'");
+        }
+    }
+
     //These all end up calling the same one.
-    public void writeFaces(Matrix matrix, String fileName, int np) {
+    public void writeEigenFaces(Matrix matrix, String fileName, int np) {
+        //WRONG, all of it
+        int MN = matrix.getColumnDimension();
 
         Matrix tempMatrixArray[] = new Matrix[np];
 
@@ -84,25 +173,28 @@ public class WriteFaces {
             int value = count - i;
             tempMatrixArray[i] = matrix.getMatrix(0, (np) - 1, value, value);
         }
-        writeFaces(tempMatrixArray, fileName, np);
+        writeEigenFaces(tempMatrixArray, fileName, np);
     }
 
-    public void writeFaces(Matrix matrixes[], String fileName, int np) {
+    public void writeEigenFaces(Matrix matrixes[], String fileName, int np) {
         ArrayList<Matrix> sendMatrixes = new ArrayList();
 
         for (int i = 0; i < np; i++){
             sendMatrixes.add(matrixes[i]);
         }
-        writeFaces(sendMatrixes, fileName);
+        writeEigenFaces(sendMatrixes, fileName);
 
     }
 
-    public void writeFaces(ArrayList<Matrix> matrixes, String fileName){
+    public void writeEigenFaces(ArrayList<Matrix> matrixes, String fileName){
 
         try {
             FileWriter fileWriter = new FileWriter(fileName);
 
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            int numberOfFaces = matrixes.size();
+            bufferedWriter.write("" + numberOfFaces);
+            bufferedWriter.newLine();
             int size = matrixes.get(0).getRowDimension();
             bufferedWriter.write("" + size);
             bufferedWriter.newLine();

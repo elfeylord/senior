@@ -20,8 +20,132 @@ import java.util.*;
 
 public class Main {
 
+    public static void prompt(){
+        System.out.println("Welcome to Cole's face reader");
+        System.out.println("Would you like to:");
+        System.out.println("1: Store a new face?");
+        System.out.println("2: Recognize a face?");
+
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.next();
+        if (input.equals("1")) {
+            storeFace();
+        } else if (input.equals("2")) {
+            recognizeFace();
+        } else {
+            System.out.println("Sorry that is not a valid input");
+        }
+
+    }
+
+    public static void storeFace() {
+        System.out.println("What is the name of your face to store?");
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.next();
+
+        System.out.println("What is the file path to the face?");
+        String filePath = scanner.next();
+        HashMap<String, ArrayList<Long>> images = ReadFaces.getInstance().readFaces("resources/files/faces.data");
+
+
+        ArrayList<Long> tempArray = loadFace(filePath);
+
+        images.put(name, tempArray);
+
+        processEigenVectors(images);
+
+    }
+
+    public static void processEigenVectors(HashMap<String, ArrayList<Long>> images) {
+        Set<String> keys = images.keySet();
+        int np = keys.size();
+        int MN = images.get(keys.iterator().next()).size();
+        Matrix A = getA(images);
+
+        ArrayList<String> names = new ArrayList();
+        for (String key : keys) {
+            names.add(key);
+        }
+        WriteFaces.getInstance().writeFaces(A, names, "resources/files/faces.data");
+
+
+        Matrix At = A.transpose();
+        Matrix C = At.times(A);
+
+        EigenvalueDecomposition eigen = new EigenvalueDecomposition(C);
+        Matrix vectorC = eigen.getV();
+        double valueC[] = eigen.getRealEigenvalues();
+
+        //TODO testing something
+        Matrix vectorL = A.times(vectorC);
+
+        ArrayList<Matrix> faces = new ArrayList();
+        for (int i = 0; i < np; i++) {
+            faces.add(vectorL.getMatrix(0, MN - 1, i, i));
+        }
+
+        WriteFaces.getInstance().writeEigenFaces(faces, "resources/files/eigenFaces.data");
+
+        ArrayList<Matrix> loadedImages = new ArrayList();
+        for (int i = 0; i < np; i++) {
+            loadedImages.add(A.getMatrix(0, MN - 1, i, i));
+        }
+
+        HashMap<String, ArrayList<Float>> values = new HashMap();
+        int iterator = 0;
+        for (Matrix loaded : loadedImages) {
+            ArrayList<Float> tempArray = new ArrayList();
+            for (Matrix face : faces) {
+                Matrix theValue = loaded.times(face.transpose());
+                double tempValue = (theValue.getArray())[0][0];
+                tempArray.add((float) tempValue);
+            }
+            values.put(names.get(iterator), tempArray);
+            iterator++;
+        }
+        WriteFaces.getInstance().writeImage(values, "resources/files/imagesValues.data");
+
+        System.out.println("Image stored");
+
+    }
+
+    public static Matrix getA(HashMap<String, ArrayList<Long>> images) {
+        Set<String> keys = images.keySet();
+        int np = keys.size();
+        int MN = images.get(keys.iterator().next()).size();
+
+        double[][] myArray = new double[MN][np];
+
+        int i = 0;
+        for (String key : keys) {
+            ArrayList<Long> tempList = images.get(key);
+            int j = 0;
+            for (long value : tempList) {
+                myArray[j][i] = value;
+                j++;
+            }
+            i++;
+        }
+        Matrix A = new Matrix(myArray);
+        return A;
+    }
+
+    public static void recognizeFace() {
+        System.out.println("What is the file path to the face?");
+        Scanner scanner = new Scanner(System.in);
+        String path = scanner.next();
+
+        HashMap<String, ArrayList<Float>> values = new HashMap();
+        values = ReadFaces.getInstance().readImages("resources/files/imagesValues.data");
+
+        ArrayList<Long> newFace = loadFace(path);
+
+    }
+
     public static void main(String[] args) throws Exception {
 
+
+        prompt();
 
         /****
          * This is the start of the magic. We will process all of them
@@ -39,13 +163,23 @@ public class Main {
             int p = 10;
             int n = 1;
 
-            double testFace[][] = loadFace(WHATEVER, MN, 1, 1);
+            //double testFace[][] = loadFace(WHATEVER, MN, 1, 1);
+            ArrayList<String> names = new ArrayList<String>();
+            for (int i = 0; i < 10; i++) {
+                names.add("Name" + i);
+            }
+
+
 
 
             //STEPS FROM VIDEO https://www.youtube.com/watch?v=LYgBqJorF44&feature=plcp
             //1. load faces.mat
             double myArray[][] = loadFaces(MN, p, n);
             Matrix A = new Matrix(myArray);
+
+            WriteFaces.getInstance().writeFaces(A, names, "resources/files/faces.data");
+
+
             Matrix At = A.transpose();
 
 
@@ -95,17 +229,14 @@ public class Main {
                 faces.add(vectorL.getMatrix(0, MN - 1, i, i));
             }
 
-            WriteFaces.getInstance().writeFaces(faces, "resources/files/faces.data");
+            WriteFaces.getInstance().writeEigenFaces(faces, "resources/files/eigenFaces.data");
 
             ArrayList<Matrix> loadedImages = new ArrayList();
             for (int i = 0; i < n * p; i++) {
                 loadedImages.add(A.getMatrix(0, MN - 1, i, i));
             }
 
-            ArrayList<String> names = new ArrayList<String>();
-            for (int i = 0; i < 10; i++) {
-                names.add("Name" + i);
-            }
+
 
 
             HashMap<String, ArrayList<Float>> values = new HashMap();
@@ -128,15 +259,15 @@ public class Main {
 
             values = ReadFaces.getInstance().readImages(imagesValuesFileName);
 
-            Matrix testFaceMatrix = new Matrix(testFace);
+            //Matrix testFaceMatrix = new Matrix(testFace);
             ArrayList<Float> testFaceValues = new ArrayList();
 
-            for (Matrix face : faces) {
+            /*for (Matrix face : faces) {
                 testFaceValues.add((float) ((testFaceMatrix.times(face.transpose()).getArray())[0][0]));
             }
+*/
 
-
-            double tempValue;
+            /*double tempValue;
 
             Map<String, Float> resultValues = new HashMap();
 
@@ -152,7 +283,7 @@ public class Main {
 
             for (String key : keys) {
                 System.out.println(key + ": " + resultValues.get(key));
-            }
+            }*/
 
             System.out.println("WHAT!!");
         }
@@ -423,22 +554,23 @@ public class Main {
         return myArray;
     }
 
-    private static double[][] loadFace(int number, int MN, int p, int n){
+    private static ArrayList<Long> loadFace(String testFile){
 
-        String testFile = "resources/images/orl_faces/s" + number + "/4.bmp";
-
-        //first column length, second row length
-        double[][] myArray = new double[MN][p*n];
 
         Image image;
         double tempArray[];
-        for (int i = 0; i < p*n; i++) {
-            image = testImage(testFile);
-            tempArray = image.getGrayArray();
-            for (int j = 0; j < MN; j++) {
-                myArray[j][i] = tempArray[j];
-            }
+
+        image = testImage(testFile);
+        //first column length, second row length
+        int MN = image.getXSize()*image.getYSize();
+        tempArray = image.getGrayArray();
+
+        ArrayList<Long> myArray = new ArrayList();
+
+        for (int j = 0; j < MN; j++) {
+            myArray.add((long)tempArray[j]);
         }
+
         return myArray;
     }
 

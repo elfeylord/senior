@@ -83,4 +83,60 @@ public class ReadFaces {
         return sendList;
     }
 
+
+    /***
+     *
+     * Number of images
+     * Length of images
+     * name
+     * data
+     */
+     public HashMap<String, ArrayList<Long>> readFaces (String fileName) {
+         HashMap<String, ArrayList<Long>> images = new HashMap();
+
+
+         try {
+
+             FileReader fileReader = new FileReader(fileName);
+
+             // Always wrap FileReader in BufferedReader.
+             BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+             String firstLine = null;
+             if ((firstLine = bufferedReader.readLine()) == null) {
+                 return images;
+             }
+
+             int line0 = Integer.parseInt(firstLine);
+
+             int line1 = Integer.parseInt(bufferedReader.readLine());
+
+             for (int i = 0; i < line0; i++){
+                 String name = bufferedReader.readLine();
+                 ArrayList<Long> putArray = new ArrayList();
+                 for (int j = 0; j < line1; j++) {
+                     putArray.add(Long.parseLong(bufferedReader.readLine()));
+                 }
+                 images.put(name, putArray);
+             }
+
+             // Always close files.
+             bufferedReader.close();
+         }
+         catch(FileNotFoundException ex) {
+             System.out.println(
+                     "Unable to open file '" +
+                             fileName + "'");
+         }
+         catch(IOException ex) {
+             System.out.println(
+                     "Error reading file '"
+                             + fileName + "'");
+             // Or we could just do this:
+             // ex.printStackTrace();
+         }
+
+         return images;
+    }
+
 }

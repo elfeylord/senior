@@ -1,5 +1,7 @@
 package image;
 
+import java.util.ArrayList;
+
 /**
  * Created by elfeylord on 10/9/15.
  */
@@ -22,6 +24,17 @@ public class Image {
         for (int i = 0; i < ySize; i++) {
             for (int j = 0; j < xSize; j++) {
                 color[j][i] = new Color();
+            }
+        }
+    }
+
+    public Image(double array[], int xSize, int ySize) {
+        this.xSize = xSize;
+        this.ySize = ySize;
+        this.color = new Color[xSize][ySize];
+        for (int i = 0; i < ySize; i++) {
+            for (int j = 0; j < xSize; j++) {
+                color[j][i] = new Color(array[(i*xSize) + j]);
             }
         }
     }
@@ -118,5 +131,38 @@ public class Image {
         }
         return false;
     }
+
+    public void convertImageToGray() {
+        for (int i = 0; i < ySize; i++){
+            for (int j = 0; j < xSize; j++) {
+                try {
+                    getColorPoint(j, i).convertColorToGray();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public double[] getGrayArray() {
+        double[] myArray;
+        myArray = new double[xSize * ySize];
+
+        for (int i = 0; i < ySize; i++) {
+            for (int j = 0; j < xSize; j++) {
+                int index = (i * xSize) + j;
+                try {
+                    myArray[index] = getColorPoint(j, i).getGrayValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return myArray;
+    }
+
+
+
+
 
 }

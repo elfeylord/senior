@@ -48,6 +48,7 @@ public class Color {
     }
     public Color() { setColor(255, 255, 255); }
 
+
     public boolean isBlack() {
         if (r == 0 && g == 0 && b ==0) {
             return true;
@@ -69,5 +70,36 @@ public class Color {
 
     public Color(Color color) {
         setColor(color);
+    }
+
+    public int getGrayValue() {
+        float gray = 0;
+
+        // 0.2989, 0.5870, 0.1140.
+        //http://stackoverflow.com/questions/687261/converting-rgb-to-grayscale-intensity
+
+        gray += (float)r * 0.2989;
+        gray += (float)g * 0.5870;
+        gray += (float)b * 0.1140;
+
+        return (int)gray;
+    }
+
+    public void convertColorToGray() {
+        r =  (int)((float)r * 0.2989);
+        g =  (int)((float)g * 0.5870);
+        b =  (int)((float)b * 0.1140);
+    }
+    public Color(double grayValue) {
+        grayValue = Math.abs(grayValue);
+        r =  notBigger((int)(grayValue * 0.2989));
+        g =  notBigger((int)(grayValue * 0.5870));
+        b =  notBigger((int)(grayValue * 0.1140));
+    }
+    private int notBigger(int value) {
+        if (value > 255) {
+            return 255;
+        }
+        return value;
     }
 }

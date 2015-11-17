@@ -35,7 +35,7 @@ public class ImageWriter {
 
         FileOutputStream out = new FileOutputStream(outFile);
 
-        for (int i = 0; i < 54; i++) {
+        for (int i = 0; i < 138; i++) {
             out.write(buffer.get(i));
         }
 
@@ -48,9 +48,9 @@ public class ImageWriter {
                 out.write(color.getG());
                 out.write(color.getR());
             }
-            out.write((int)255);
-            out.write((int)255);
-            out.write((int)255);
+            //out.write((int)255);
+            //out.write((int)255);
+            //out.write((int)255);
         }
 
         out.close();

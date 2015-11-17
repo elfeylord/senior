@@ -5,6 +5,8 @@ import Jama.Matrix;
 import detection.Blob;
 import detection.BlobProcessing;
 import edge.ConvertEdge;
+import files.ReadFaces;
+import files.WriteFaces;
 import image.Color;
 import image.Image;
 import image.ImageReader;
@@ -20,26 +22,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        double test1[][] = new double[2][3];//
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 3; j++)
-                test1[i][j] = 9;
-        }
-        double test2[][] = new double[3][1];
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 3; j++)
-                test1[i][j] = 9;
-        }
-        Matrix testM1 = new Matrix(test1);
-        Matrix testM2 = new Matrix(test2);
-        testM1.times(testM2);
-
-        //ANSWER [2][3] IS
-        //2 DOWN
-        //3 RIGHT
-
-        //| 9 9 9 |
-        //| 9 9 9 |
 
         /****
          * This is the start of the magic. We will process all of them
@@ -48,18 +30,14 @@ public class Main {
         System.out.println("Oh, and there is a much better way of actually doing this....");
         for (int WHATEVER = 1; WHATEVER < 11; WHATEVER++) {
 
-
             System.out.println("\n\n\nWe want face number " + (WHATEVER - 1) + " " +
                     "to win.");
-
-
 
 
             //Eigen vectors
             int MN = 92 * 112;
             int p = 10;
             int n = 1;
-
 
             double testFace[][] = loadFace(WHATEVER, MN, 1, 1);
 
@@ -117,12 +95,21 @@ public class Main {
                 faces.add(vectorL.getMatrix(0, MN - 1, i, i));
             }
 
+            WriteFaces.getInstance().writeFaces(faces, "resources/files/faces.data");
+
             ArrayList<Matrix> loadedImages = new ArrayList();
             for (int i = 0; i < n * p; i++) {
                 loadedImages.add(A.getMatrix(0, MN - 1, i, i));
             }
 
-            ArrayList<ArrayList<Float>> values = new ArrayList();
+            ArrayList<String> names = new ArrayList<String>();
+            for (int i = 0; i < 10; i++) {
+                names.add("Name" + i);
+            }
+
+
+            HashMap<String, ArrayList<Float>> values = new HashMap();
+            /*int iterator = 0;
             for (Matrix loaded : loadedImages) {
                 ArrayList<Float> tempArray = new ArrayList();
                 for (Matrix face : faces) {
@@ -130,9 +117,16 @@ public class Main {
                     double tempValue = (theValue.getArray())[0][0];
                     tempArray.add((float) tempValue);
                 }
-                values.add(tempArray);
+                values.put(names.get(iterator), tempArray);
+                iterator++;
             }
+*/
+            String imagesValuesFileName = "resources/files/imagesValues.data";
 
+  //          WriteFaces.getInstance().writeImage(values, imagesValuesFileName);
+
+
+            values = ReadFaces.getInstance().readImages(imagesValuesFileName);
 
             Matrix testFaceMatrix = new Matrix(testFace);
             ArrayList<Float> testFaceValues = new ArrayList();
@@ -141,22 +135,24 @@ public class Main {
                 testFaceValues.add((float) ((testFaceMatrix.times(face.transpose()).getArray())[0][0]));
             }
 
-            ArrayList<Float> resultValues = new ArrayList();
 
             double tempValue;
-            for (ArrayList<Float> tempValues : values) {
 
+            Map<String, Float> resultValues = new HashMap();
+
+            Set<String> keys = values.keySet();
+            for (String key : keys) {
+                ArrayList<Float> tempValues = values.get(key);
                 tempValue = 0;
                 for (int i = 0; i < tempValues.size(); i++) {
                     tempValue += Math.abs(tempValues.get(i) - testFaceValues.get(i));
                 }
-                resultValues.add((float) tempValue);
+                resultValues.put(key, (float) tempValue);
             }
 
-            for (int i = 0; i < resultValues.size(); i++) {
-                System.out.println("Image " + i + ": " + resultValues.get(i));
+            for (String key : keys) {
+                System.out.println(key + ": " + resultValues.get(key));
             }
-
 
             System.out.println("WHAT!!");
         }
@@ -444,38 +440,6 @@ public class Main {
             }
         }
         return myArray;
-    }
-
-    private static void displayImage(Image image) {
-        for (int i = 0; i < image.getYSize(); i++) {
-            for (int j = 0; j < image.getXSize(); j++) {
-                Color color;
-                try {
-                    color = image.getColorPoint(j, i);
-                    if (color.getR() == 0 && color.getG() == 0 && color.getB() == 0) {
-                        System.out.print("@ ");
-                    }
-                    else if (color.getR() == 255 && color.getG() == 255 && color.getB() == 255) {
-                        System.out.print("- ");
-                    }
-                    else if (color.getR() == 237 && color.getG() == 28 && color.getB() == 36) {
-                        System.out.print("R ");
-                    }
-                    else if (color.getR() == 63 && color.getG() == 72 && color.getB() == 204) {
-                        System.out.print("B ");
-                    }
-                    else if (color.getR() == 34 && color.getG() == 177 && color.getB() == 76) {
-                        System.out.print("G ");
-                    }
-                    else {
-                        System.out.print("? ");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            System.out.print("\n");
-        }
     }
 
     private static Image testImage(String inFile) {

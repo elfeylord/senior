@@ -26,6 +26,50 @@ public class ReadFaces {
         return instance;
     }
 
+    public ArrayList<Matrix> readEigenFaces(String fileName) {
+        ArrayList eigenFaces = new ArrayList();
+
+        try {
+
+            FileReader fileReader = new FileReader(fileName);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            //number of faces
+            int line0 = Integer.parseInt(bufferedReader.readLine());
+            //number of lines
+            int line1 = Integer.parseInt(bufferedReader.readLine());
+
+
+            for (int i = 0; i < line0; i++){
+                double face[][] = new double[line1][1];
+
+                for (int j = 0; j < line1; j++) {
+                    face[j][0] = Double.parseDouble(bufferedReader.readLine());
+                }
+                eigenFaces.add(new Matrix(face));
+            }
+
+            // Always close files.
+            bufferedReader.close();
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                    "Unable to open file '" +
+                            fileName + "'");
+        }
+        catch(IOException ex) {
+            System.out.println(
+                    "Error reading file '"
+                            + fileName + "'");
+            // Or we could just do this:
+            // ex.printStackTrace();
+        }
+
+        return eigenFaces;
+    }
+
     /***
      *
      *
@@ -41,7 +85,7 @@ public class ReadFaces {
      * @param fileName
      * @return
      */
-    public HashMap<String, ArrayList<Float>> readImages(String fileName) {
+    public HashMap<String, ArrayList<Float>> readImageValues(String fileName) {
 
         HashMap<String, ArrayList<Float>> sendList = new HashMap();
 

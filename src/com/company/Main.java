@@ -51,7 +51,12 @@ public class Main {
         ArrayList<Matrix> eigenFaces = new ArrayList();
         eigenFaces = ReadFaces.getInstance().readEigenFaces("resources/files/eigenFaces.data");
 
-        ArrayList<Long> newFace = loadFace(path);
+        ArrayList<Long> newFace = null;
+        try {
+            newFace = loadFace(path);
+        } catch (Throwable throwable) {
+            return;
+        }
 
         HashMap<String, ArrayList<Long>> singleValue = new HashMap();
         singleValue.put("temp123456", newFace);
@@ -132,13 +137,35 @@ public class Main {
         return myArray;
     }
 
-    private static ArrayList<Long> loadFace(String testFile){
+    private static ArrayList<Long> loadFace(String testFile) throws Throwable {
 
 
         Image image;
         double tempArray[];
 
         image = testImage(testFile);
+
+
+        boolean throwProblem = false;
+
+        if (image.getYSize() != image.getXSize()) {
+            System.out.println("The image was not processed. Please provide an image that is the same width as it is height.");
+            throwProblem = true;
+        }
+        if (image.getXSize() < 512) {
+            System.out.println("The image was not processed. It is too small. Please provide an image that is at least 512 pixels.");
+            throwProblem = true;
+        }
+        if(image.getXSize() > 1024) {
+           System.out.println("The image was not processed. It is too large. Please provide an image that is at most 1024 pixels.");
+            throwProblem = true;
+        }
+
+        if (throwProblem) {
+            throw new Throwable("Error");
+        }
+
+
         //first column length, second row length
         int MN = image.getXSize()*image.getYSize();
         tempArray = image.getGrayArray();
@@ -179,7 +206,12 @@ public class Main {
             return;
         }
 
-        ArrayList<Long> tempArray = loadFace(filePath);
+        ArrayList<Long> tempArray = null;
+        try {
+            tempArray = loadFace(filePath);
+        } catch (Throwable throwable) {
+            return;
+        }
 
         images.put(name, tempArray);
 

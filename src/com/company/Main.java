@@ -7,7 +7,11 @@ import files.WriteFaces;
 import image.Image;
 import image.ImageReader;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
+
 
 
 public class Main {
@@ -130,6 +134,7 @@ public class Main {
         for (int i = 0; i < p*n; i++) {
             image = testImage(inFiles[i]);
             tempArray = image.getGrayArray();
+            tempArray = image.resizeImage(tempArray, 512, 512, image.getXSize(), image.getYSize());
             for (int j = 0; j < MN; j++) {
                 myArray[j][i] = tempArray[j];
             }
@@ -169,6 +174,9 @@ public class Main {
         //first column length, second row length
         int MN = image.getXSize()*image.getYSize();
         tempArray = image.getGrayArray();
+        tempArray = image.resizeImage(tempArray, 512, 512, image.getXSize(), image.getYSize());
+        MN = 512 * 512;
+
 
         ArrayList<Long> myArray = new ArrayList();
 

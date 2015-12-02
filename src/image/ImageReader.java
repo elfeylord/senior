@@ -32,13 +32,15 @@ public class ImageReader {
         image = new Image(xSize, ySize);
 
         int numberOfColorsUsed = buffer.get(46);
-        int start = 54 + 4 * (numberOfColorsUsed);
-        start = 138;
+        int start = buffer.get(10) + 4 * (numberOfColorsUsed);
+
+
 
         int numberOfColorsSpace = 3;
         //this is so that the image is recorded properly. .BMP files start bottom left.
         int bottom  = ySize;
         //every end of the x axis has 3 bytes extra
+        int wasterSize = ((buffer.size() - start) - (xSize * ySize * 3)) / ySize;
         int waster = 0;
         for (int i = 0; i < ySize; i++) {
             bottom--;
@@ -54,7 +56,7 @@ public class ImageReader {
                 image.setColorPoint(j, bottom, color);
             }
             //waste 3 bytes just because that's what the buffer needs at times.
-            waster += 0;
+            waster += wasterSize;
         }
     }
 

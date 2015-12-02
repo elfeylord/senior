@@ -11,6 +11,11 @@ public class Image {
     private int ySize;
     private Color[][] color;
 
+    /**
+     *
+     * @param xSize
+     * @param ySize
+     */
     public Image(int xSize, int ySize) {
         if (xSize < 1) {
             xSize = 1;
@@ -28,6 +33,12 @@ public class Image {
         }
     }
 
+    /**
+     *
+     * @param array
+     * @param xSize
+     * @param ySize
+     */
     public Image(double array[], int xSize, int ySize) {
         this.xSize = xSize;
         this.ySize = ySize;
@@ -161,8 +172,36 @@ public class Image {
         return myArray;
     }
 
+    public double[] resizeImage(double[] oldArray, int newWidth, int newHeight, int oldWidth, int oldHeight) {
+        //Thanks to http://willperone.net/Code/codescaling.php
+
+        double[] newArray = new double[newWidth * newHeight];
 
 
+        int YD = (oldHeight / newHeight) * oldWidth - oldWidth;
+        int YR = oldHeight % newHeight;
+        int XD = oldWidth / newWidth;
+        int XR = oldWidth % newWidth;
+        int outOffset = 0;
+        int inOffset = 0;
 
-
+        for (int y = newHeight, YE = 0; y > 0; y--) {
+            for (int x = newWidth, XE = 0; x > 0; x--) {
+                newArray[outOffset++] = oldArray[inOffset];
+                inOffset += XD;
+                XE += XR;
+                if(XE >= newWidth) {
+                    XE -= newWidth;
+                    inOffset++;
+                }
+            }
+            inOffset += YD;
+            YE += YR;
+            if (YE >= newHeight) {
+                YE -= newHeight;
+                inOffset += oldWidth;
+            }
+        }
+        return newArray;
+    }
 }

@@ -58,11 +58,13 @@ public class ReadFaces {
             System.out.println(
                     "Unable to open file '" +
                             fileName + "'");
+            System.exit(1);
         }
         catch(IOException ex) {
             System.out.println(
                     "Error reading file '"
                             + fileName + "'");
+            System.exit(1);
             // Or we could just do this:
             // ex.printStackTrace();
         }
@@ -115,11 +117,13 @@ public class ReadFaces {
             System.out.println(
                     "Unable to open file '" +
                             fileName + "'");
+            System.exit(1);
         }
         catch(IOException ex) {
             System.out.println(
                     "Error reading file '"
                             + fileName + "'");
+            System.exit(1);
             // Or we could just do this:
             // ex.printStackTrace();
         }
@@ -171,11 +175,13 @@ public class ReadFaces {
              System.out.println(
                      "Unable to open file '" +
                              fileName + "'");
+             System.exit(1);
          }
          catch(IOException ex) {
              System.out.println(
                      "Error reading file '"
                              + fileName + "'");
+             System.exit(1);
              // Or we could just do this:
              // ex.printStackTrace();
          }

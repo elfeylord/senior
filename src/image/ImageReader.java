@@ -73,9 +73,15 @@ public class ImageReader {
             }
             in.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(
+                    "Unable to open file '" +
+                            fileName + "'");
+            System.exit(1);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(
+                    "Unable to open file '" +
+                            fileName + "'");
+            System.exit(1);
         }
         return buffer;
     }

@@ -94,7 +94,7 @@ public class Main {
 
     public static void compareFaces(ArrayList<Float> newFaceValues, HashMap<String, ArrayList<Float>> values) {
         String winningFace = "none";
-        float totalForWinningFace = (float)999999999;
+        float totalForWinningFace = (float)Float.MAX_VALUE;
         Set<String> keys = values.keySet();
         for (String key : keys) {
             float tempValue = 0;

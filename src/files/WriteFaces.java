@@ -61,7 +61,7 @@ public class WriteFaces {
                 bufferedWriter.write(key);
                 bufferedWriter.newLine();
                 for (float value : values) {
-                    bufferedWriter.write("" + value);
+                    bufferedWriter.write("" + String.format("%.12f", value));
                     bufferedWriter.newLine();
                 }
             }
@@ -71,6 +71,7 @@ public class WriteFaces {
         catch(IOException ex) {
             System.out.println(
                     "Error writing to file '" + fileName + "'");
+            System.exit(1);
         }
     }
 
@@ -158,6 +159,7 @@ public class WriteFaces {
         catch(IOException ex) {
             System.out.println(
                     "Error writing to file '" + fileName + "'");
+            System.exit(1);
         }
     }
 
@@ -214,6 +216,7 @@ public class WriteFaces {
         catch(IOException ex) {
             System.out.println(
                     "Error writing to file '" + fileName + "'");
+            System.exit(1);
         }
     }
 }
